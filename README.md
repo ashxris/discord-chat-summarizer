@@ -40,13 +40,15 @@ keeps counting — nothing is lost.
    That grants View Channels, Send Messages, Embed Links, and Read Message
    History.
 
-**2. Groq key** — create one at [console.groq.com](https://console.groq.com/keys)
-(keys start with `gsk_`). You'll set it with `/setkey` in Discord, not in a file.
+**2. Free Groq API Key** — Groq offers a fast, generous **free tier with no credit card required**. Getting a key takes under a minute:
+   1. Head over to [console.groq.com](https://console.groq.com/keys) and sign in with Google or GitHub.
+   2. Click **Create API Key** and copy your key (it starts with `gsk_`).
+   3. That's it! You won't even need to edit configuration files — simply configure it directly in Discord by running `/setkey key:gsk_...` as an admin.
 
 **3. Run the bot** (Python 3.10+):
 
 ```bash
-cd Chat Summarizer
+cd Discord_Chat_Summarizer
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
