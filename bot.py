@@ -29,6 +29,7 @@ INTERVAL_SECONDS = float(os.getenv("INTERVAL_SECONDS", "60"))
 DEFAULT_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
 DEV_GUILD_ID = os.getenv("DEV_GUILD_ID")
 DB_PATH = os.getenv("DB_PATH", "data/chatsummarizer.db")
+DONATION_URL = os.getenv("DONATION_URL", "https://buymeacoffee.com/ashxris")
 
 log = logging.getLogger("chatsummarizer")
 
@@ -269,17 +270,20 @@ async def status_command(interaction: discord.Interaction) -> None:
     key_line = f"set (ends in `{key[-4:]}`)" if key else "**not set** — summaries stay paused until an admin runs `/setkey`"
     channel_line = "enabled" if interaction.channel_id in client.enabled else "disabled — run `/enable` here to watch it"
     buffered = len(client.buffers.get(interaction.channel_id, []))
-    await interaction.response.send_message(
-        "\n".join([
-            "**Chat Summarizer status**",
-            f"• Groq key: {key_line}",
-            f"• Model: `{model or DEFAULT_MODEL}`",
-            f"• This channel: {channel_line}",
-            f"• Messages buffered here since the last summary: {buffered}",
-            f"• Trigger: more than {MESSAGE_THRESHOLD} messages, checked every {INTERVAL_SECONDS:g}s",
-        ]),
-        ephemeral=True,
-    )
+    lines = [
+        "**Chat Summarizer status**",
+        f"• Groq key: {key_line}",
+        f"• Model: `{model or DEFAULT_MODEL}`",
+        f"• This channel: {channel_line}",
+        f"• Messages buffered here since the last summary: {buffered}",
+        f"• Trigger: more than {MESSAGE_THRESHOLD} messages, checked every {INTERVAL_SECONDS:g}s",
+    ]
+    view = None
+    if DONATION_URL:
+        lines.append(f"\n☕ Enjoying Chat Summarizer? [Buy Me a Coffee]({DONATION_URL})")
+        view = discord.ui.View()
+        view.add_item(discord.ui.Button(label="Buy Me a Coffee ☕", url=DONATION_URL, style=discord.ButtonStyle.link))
+    await interaction.response.send_message("\n".join(lines), view=view, ephemeral=True)
 
 
 def main() -> None:
