@@ -4,6 +4,13 @@ Thank you for considering contributing to **Chat Summarizer**! Whether you're fi
 
 Please take a moment to review this guide to make the contribution process smooth and effective.
 
+> [!IMPORTANT]
+> **Branch Requirement:** Pull request submitters **must work on a new branch** rather than making changes directly on `main`:
+> ```bash
+> git checkout -b feature-branch-name
+> ```
+> PRs submitted directly from personal `main` branches may be asked to be recreated from a dedicated branch.
+
 ---
 
 ## Table of Contents
