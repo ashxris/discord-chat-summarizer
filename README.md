@@ -111,10 +111,15 @@ store.py        SQLite persistence (per-guild key/model, enabled channels)
 ## Troubleshooting
 
 - **Bot posts nothing** — check `/status`: is the channel enabled, is the key
-  set, is the buffered count above 10? Also confirm it has View/Send
-  permissions in that channel.
-- **Slash commands don't appear** — make sure the bot was invited with the
-  `applications.commands` scope, and try `DEV_GUILD_ID` for instant sync.
+  set, and is the buffered count above 10?
+- **Embeds / summaries not posting** — summaries are delivered as Discord
+  embeds. Ensure the bot has **Embed Links** permission enabled in that channel
+  (under Channel Settings → Permissions → allow *Embed Links* and *Send Messages*).
+  If Embed Links is blocked, the summary cannot be posted.
+- **Slash commands don't appear or appear duplicated** — make sure the bot was
+  invited with the `applications.commands` scope, and try `DEV_GUILD_ID` for instant
+  sync. If duplicate commands appear in the menu, press `Cmd + R` (Mac) or `Ctrl + R`
+  (Windows) in Discord to refresh your client's cache.
 - **`PrivilegedIntentsRequired` on startup** — the Message Content Intent
   wasn't enabled in the Developer Portal.
 - **Model errors** — Groq model names change; browse available models at
