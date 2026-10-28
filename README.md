@@ -6,6 +6,8 @@ last summary, condenses the conversation with the **Groq API** and posts the
 digest back into the channel. With 10 or fewer messages it stays idle and
 keeps counting — nothing is lost.
 
+> 🔑 **Bring Your Own Key (BYOK):** Uses a BYOK architecture where each server provides its own free Groq API key via `/setkey` — ensuring complete privacy, zero API costs for the bot host, and dedicated rate limits for every server.
+
 ## How it works
 
 - Admins run `/enable` in the channels they want summarized, and `/setkey`
