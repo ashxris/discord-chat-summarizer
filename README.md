@@ -138,3 +138,7 @@ store.py        SQLite persistence (per-guild key/model, enabled channels)
 - **Model errors** — Groq model names change; browse available models at
   [console.groq.com/docs/models](https://console.groq.com/docs/models) and
   `/setmodel` accordingly.
+
+## Contributing
+
+Contributions are welcome! Please check out our [Contributing Guide](CONTRIBUTING.md) for local development setup, guidelines, and PR checklist.
