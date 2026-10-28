@@ -1,4 +1,15 @@
-# Discord Chat Summarizer Bot
+<div align="center">
+  <img src="assets/icon.jpg" alt="Chat Summarizer Icon" width="128" />
+  <h1>Chat Summarizer</h1>
+  <p><strong>A Discord bot that condenses active channel conversations into concise AI digests using Groq.</strong></p>
+  <p>
+    <img src="https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord" />
+    <img src="https://img.shields.io/badge/Powered%20by-Groq-F55036?style=flat" alt="Groq" />
+    <a href="https://buymeacoffee.com/ashwiinn"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee" /></a>
+  </p>
+</div>
+
+---
 
 A Discord bot that keeps busy channels readable. Every minute it checks each
 watched channel and, if **more than 10 messages** have been sent since the
