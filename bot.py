@@ -26,7 +26,7 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN", "")
 MESSAGE_THRESHOLD = int(os.getenv("MESSAGE_THRESHOLD", "10"))
 INTERVAL_SECONDS = float(os.getenv("INTERVAL_SECONDS", "60"))
-DEFAULT_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+DEFAULT_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
 DEV_GUILD_ID = os.getenv("DEV_GUILD_ID")
 DB_PATH = os.getenv("DB_PATH", "data/chatsummarizer.db")
 
@@ -203,8 +203,8 @@ async def clearkey_command(interaction: discord.Interaction) -> None:
     )
 
 
-@client.tree.command(name="setmodel", description="Choose the Groq model for summaries (default: llama-3.3-70b-versatile)")
-@app_commands.describe(model="Model name, e.g. llama-3.3-70b-versatile")
+@client.tree.command(name="setmodel", description="Choose the Groq model for summaries (default: qwen/qwen3.8-27b)")
+@app_commands.describe(model="Model name, e.g. qwen/qwen3.8-27b")
 @app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 async def setmodel_command(interaction: discord.Interaction, model: str) -> None:

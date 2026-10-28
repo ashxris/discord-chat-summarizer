@@ -84,7 +84,7 @@ Command results are ephemeral and keys are only ever displayed masked (last
 | Variable | Default | Meaning |
 | --- | --- | --- |
 | `DISCORD_TOKEN` | — | Required. Bot token from the Developer Portal |
-| `GROQ_MODEL` | `llama-3.3-70b-versatile` | Default model; per-server via `/setmodel` |
+| `GROQ_MODEL` | `qwen/qwen3.8-27b` | Default model; per-server via `/setmodel` |
 | `MESSAGE_THRESHOLD` | `10` | Summarize when strictly more than this many messages since the last summary |
 | `INTERVAL_SECONDS` | `60` | How often channels are checked |
 | `DEV_GUILD_ID` | — | Instant slash-command sync to one server for testing |
