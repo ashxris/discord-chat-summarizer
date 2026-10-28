@@ -29,7 +29,7 @@ INTERVAL_SECONDS = float(os.getenv("INTERVAL_SECONDS", "60"))
 DEFAULT_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
 DEV_GUILD_ID = os.getenv("DEV_GUILD_ID")
 DB_PATH = os.getenv("DB_PATH", "data/chatsummarizer.db")
-DONATION_URL = os.getenv("DONATION_URL", "https://buymeacoffee.com/ashxris")
+DONATION_URL = os.getenv("DONATION_URL", "https://buymeacoffee.com/ashwiinn")
 
 log = logging.getLogger("chatsummarizer")
 

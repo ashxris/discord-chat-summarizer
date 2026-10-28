@@ -89,7 +89,7 @@ Command results are ephemeral and keys are only ever displayed masked (last
 | `INTERVAL_SECONDS` | `60` | How often channels are checked |
 | `DEV_GUILD_ID` | — | Instant slash-command sync to one server for testing |
 | `DB_PATH` | `data/chatsummarizer.db` | SQLite database location |
-| `DONATION_URL` | `https://buymeacoffee.com/ashxris` | Donation link shown in `/status` |
+| `DONATION_URL` | `https://buymeacoffee.com/ashwiinn` | Donation link shown in `/status` |
 
 ## Data & privacy notes
 
