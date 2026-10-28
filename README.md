@@ -67,11 +67,11 @@ commands while testing, put your server ID in `DEV_GUILD_ID` in `.env`.
 
 | Command | Who | What it does |
 | --- | --- | --- |
-| `/setkey key` | Manage Server | Validates the key with Groq and stores it for this server |
-| `/clearkey` | Manage Server | Removes the stored key (summaries pause) |
-| `/setmodel model` | Manage Server | Override the Groq model, e.g. `llama-3.1-8b-instant` |
-| `/enable` | Manage Server | Watch the current channel |
-| `/disable` | Manage Server | Stop watching the current channel and discard its buffer |
+| `/setkey key` | Administrator | Validates the key with Groq and stores it for this server |
+| `/clearkey` | Administrator | Removes the stored key (summaries pause) |
+| `/setmodel model` | Administrator | Override the Groq model, e.g. `llama-3.1-8b-instant` |
+| `/enable` | Administrator | Watch the current channel |
+| `/disable` | Administrator | Stop watching the current channel and discard its buffer |
 | `/status` | anyone (ephemeral) | Show key state, model, threshold, buffered count |
 
 Command results are ephemeral and keys are only ever displayed masked (last
@@ -91,7 +91,7 @@ Command results are ephemeral and keys are only ever displayed masked (last
 ## Data & privacy notes
 
 - Groq keys are stored in **plaintext SQLite** at `DB_PATH`. Anyone with
-  Manage Server can replace the key, and the bot host can read it — only
+  Administrator can replace the key, and the bot host can read it — only
   share the server with people you trust with that.
 - Message text lives in memory only; it is never written to disk.
 - Groq processes message content server-side per their API terms — make sure

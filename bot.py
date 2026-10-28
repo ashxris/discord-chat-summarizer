@@ -41,7 +41,7 @@ class BufferedMessage:
 
 
 def _can_manage(interaction: discord.Interaction) -> bool:
-    return isinstance(interaction.user, discord.Member) and interaction.user.guild_permissions.manage_guild
+    return isinstance(interaction.user, discord.Member) and interaction.user.guild_permissions.administrator
 
 
 class ChatSummarizer(discord.Client):
@@ -170,11 +170,11 @@ client = ChatSummarizer()
 
 @client.tree.command(name="setkey", description="Store the Groq API key used to summarize this server's channels")
 @app_commands.describe(key="Your Groq API key from console.groq.com (starts with gsk_)")
-@app_commands.default_permissions(manage_guild=True)
+@app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 async def setkey_command(interaction: discord.Interaction, key: str) -> None:
     if not _can_manage(interaction):
-        await interaction.response.send_message("You need **Manage Server** permission to use this command.", ephemeral=True)
+        await interaction.response.send_message("You need **Administrator** permission to use this command.", ephemeral=True)
         return
     await interaction.response.defer(ephemeral=True)
     try:
@@ -191,11 +191,11 @@ async def setkey_command(interaction: discord.Interaction, key: str) -> None:
 
 
 @client.tree.command(name="clearkey", description="Remove this server's stored Groq API key")
-@app_commands.default_permissions(manage_guild=True)
+@app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 async def clearkey_command(interaction: discord.Interaction) -> None:
     if not _can_manage(interaction):
-        await interaction.response.send_message("You need **Manage Server** permission to use this command.", ephemeral=True)
+        await interaction.response.send_message("You need **Administrator** permission to use this command.", ephemeral=True)
         return
     await client.store.clear_key(interaction.guild_id)
     await interaction.response.send_message(
@@ -205,11 +205,11 @@ async def clearkey_command(interaction: discord.Interaction) -> None:
 
 @client.tree.command(name="setmodel", description="Choose the Groq model for summaries (default: llama-3.3-70b-versatile)")
 @app_commands.describe(model="Model name, e.g. llama-3.3-70b-versatile")
-@app_commands.default_permissions(manage_guild=True)
+@app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 async def setmodel_command(interaction: discord.Interaction, model: str) -> None:
     if not _can_manage(interaction):
-        await interaction.response.send_message("You need **Manage Server** permission to use this command.", ephemeral=True)
+        await interaction.response.send_message("You need **Administrator** permission to use this command.", ephemeral=True)
         return
     await interaction.response.defer(ephemeral=True)
     key, _ = await client.store.settings(interaction.guild_id)
@@ -228,11 +228,11 @@ async def setmodel_command(interaction: discord.Interaction, model: str) -> None
 
 
 @client.tree.command(name="enable", description="Start summarizing this channel (checked every minute)")
-@app_commands.default_permissions(manage_guild=True)
+@app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 async def enable_command(interaction: discord.Interaction) -> None:
     if not _can_manage(interaction):
-        await interaction.response.send_message("You need **Manage Server** permission to use this command.", ephemeral=True)
+        await interaction.response.send_message("You need **Administrator** permission to use this command.", ephemeral=True)
         return
     channel = interaction.channel
     if not isinstance(channel, discord.abc.Messageable):
@@ -250,11 +250,11 @@ async def enable_command(interaction: discord.Interaction) -> None:
 
 
 @client.tree.command(name="disable", description="Stop summarizing this channel")
-@app_commands.default_permissions(manage_guild=True)
+@app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 async def disable_command(interaction: discord.Interaction) -> None:
     if not _can_manage(interaction):
-        await interaction.response.send_message("You need **Manage Server** permission to use this command.", ephemeral=True)
+        await interaction.response.send_message("You need **Administrator** permission to use this command.", ephemeral=True)
         return
     await client.store.disable_channel(interaction.channel_id)
     client.enabled.discard(interaction.channel_id)
