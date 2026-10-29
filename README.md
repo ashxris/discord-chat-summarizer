@@ -21,7 +21,6 @@ A Discord bot that keeps busy channels readable. It monitors conversation activi
 - 📊 **Customizable Message Thresholds (`/setthreshold`)**: Fine-tune message triggers between **10 and 400 messages** so you only get digests when there's meaningful discussion.
 - ⚡ **Blazing-Fast AI Inference**: Powered by Groq (default: `qwen/qwen3.8-27b`) to generate objective, high-quality channel summaries in seconds.
 - 🛡️ **Administrator Security**: All configuration commands are restricted to members with Discord **Administrator** permissions.
-- ☕ **Built-in Support Integration**: An interactive Buy Me a Coffee button integrated right into the `/status` command.
 
 ## How it works
 
