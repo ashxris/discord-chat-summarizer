@@ -78,6 +78,29 @@ python bot.py
 Slash commands can take a few minutes to appear on first launch. For instant
 commands while testing, put your server ID in `DEV_GUILD_ID` in `.env`.
 
+<details>
+<summary><strong>☁️ Deploy on Railway (recommended for running 24/7)</strong></summary>
+
+The bot has to stay online to catch messages, so a small always-on host is an
+easier home for it than a laptop that sleeps. Railway runs the repo as-is, with
+no Dockerfile needed.
+
+1. Push this repo to GitHub, then in [Railway](https://railway.com) choose
+   **New Project → Deploy from GitHub repo** and select it.
+2. Open **Variables** and add `DISCORD_TOKEN` with your bot token. Add any
+   other `.env` values you want to override (see the configuration table below).
+3. Add a **Volume** mounted at `/data`, then set
+   `DB_PATH=/data/chatsummarizer.db`. The SQLite file holds each server's Groq
+   key and enabled channels — without the volume it is wiped on every redeploy.
+4. Under **Settings → Deploy**, set the custom start command to `python bot.py`.
+   The bot is a worker, so leave domains and ports untouched.
+5. Deploy and watch the logs for `Logged in as …`, then run `/setkey` and
+   `/enable` in Discord as usual.
+
+After that, pushes to the connected branch redeploy automatically.
+
+</details>
+
 ## Commands
 
 | Command | Who | What it does |
