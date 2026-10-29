@@ -11,13 +11,17 @@
 
 ---
 
-A Discord bot that keeps busy channels readable. Every minute it checks each
-watched channel and, if **more than 10 messages** have been sent since the
-last summary, condenses the conversation with the **Groq API** and posts the
-digest back into the channel. With 10 or fewer messages it stays idle and
-keeps counting — nothing is lost.
+A Discord bot that keeps busy channels readable. It monitors conversation activity across multiple channels and automatically summarizes them into clean, bulleted digests with the **Groq API** whenever activity crosses your message threshold. With fewer messages, it stays idle and keeps counting — nothing is lost.
 
-> 🔑 **Bring Your Own Key (BYOK):** Uses a BYOK architecture where each server provides its own free Groq API key via `/setkey` — ensuring complete privacy, zero API costs for the bot host, and dedicated rate limits for every server.
+## ✨ Features
+
+- 🔑 **Bring Your Own Key (BYOK)**: Operates on a BYOK architecture where each server supplies its own free Groq API key via `/setkey` — ensuring complete privacy, dedicated rate limits, and zero API costs for the bot host.
+- 📡 **Multi-Channel & Multi-Server Support**: Initiate and run the bot across multiple channels simultaneously. Each channel operates independently with its own message buffer, counter, and summary timer.
+- ⏱️ **Customizable Intervals (`/setinterval`)**: Server admins can tweak how frequently channels are checked directly via slash commands (anywhere between **1 minute and 6 hours**).
+- 📊 **Customizable Message Thresholds (`/setthreshold`)**: Fine-tune message triggers between **10 and 400 messages** so you only get digests when there's meaningful discussion.
+- ⚡ **Blazing-Fast AI Inference**: Powered by Groq (default: `qwen/qwen3.8-27b`) to generate objective, high-quality channel summaries in seconds.
+- 🛡️ **Administrator Security**: All configuration commands are restricted to members with Discord **Administrator** permissions.
+- ☕ **Built-in Support Integration**: An interactive Buy Me a Coffee button integrated right into the `/status` command.
 
 ## How it works
 
@@ -107,10 +111,12 @@ After that, pushes to the connected branch redeploy automatically.
 | --- | --- | --- |
 | `/setkey key` | Administrator | Validates the key with Groq and stores it for this server |
 | `/clearkey` | Administrator | Removes the stored key (summaries pause) |
-| `/setmodel model` | Administrator | Override the Groq model, e.g. `llama-3.1-8b-instant` |
-| `/enable` | Administrator | Watch the current channel |
+| `/setmodel model` | Administrator | Override the Groq model, e.g. `llama-3.3-70b-versatile` |
+| `/setinterval seconds` | Administrator | Set check interval between 1 minute and 6 hours (60 to 21600s) |
+| `/setthreshold messages` | Administrator | Set message trigger threshold between 10 and 400 messages |
+| `/enable` | Administrator | Watch the current channel (tracks independently) |
 | `/disable` | Administrator | Stop watching the current channel and discard its buffer |
-| `/status` | anyone (ephemeral) | Show key state, model, threshold, buffered count |
+| `/status` | anyone (ephemeral) | Show key state, model, interval, threshold, and buffered count |
 
 Command results are ephemeral and keys are only ever displayed masked (last
 4 characters).
@@ -144,23 +150,15 @@ summarizer.py   Groq client wrapper, prompt, transcript formatting
 store.py        SQLite persistence (per-guild key/model, enabled channels)
 ```
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
-- **Bot posts nothing** — check `/status`: is the channel enabled, is the key
-  set, and is the buffered count above 10?
-- **Embeds / summaries not posting** — summaries are delivered as Discord
-  embeds. Ensure the bot has **Embed Links** permission enabled in that channel
-  (under Channel Settings → Permissions → allow *Embed Links* and *Send Messages*).
-  If Embed Links is blocked, the summary cannot be posted.
-- **Slash commands don't appear or appear duplicated** — make sure the bot was
-  invited with the `applications.commands` scope, and try `DEV_GUILD_ID` for instant
-  sync. If duplicate commands appear in the menu, press `Cmd + R` (Mac) or `Ctrl + R`
-  (Windows) in Discord to refresh your client's cache.
-- **`PrivilegedIntentsRequired` on startup** — the Message Content Intent
-  wasn't enabled in the Developer Portal.
-- **Model errors** — Groq model names change; browse available models at
-  [console.groq.com/docs/models](https://console.groq.com/docs/models) and
-  `/setmodel` accordingly.
+| Issue | Likely Cause | Solution |
+| --- | --- | --- |
+| **Bot posts no summaries** | Channel disabled, key missing, or under threshold | Run `/status` in the channel. Verify the channel is **enabled**, Groq key is **set**, and buffered messages exceed your threshold. |
+| **Embeds / digests not posting** | Missing channel permissions | Summaries are formatted as Discord embeds. Ensure the bot has **Embed Links** and **Send Messages** granted in the channel permissions. |
+| **Commands missing or duplicated** | Discord client cache | If commands appear twice or don't refresh after updates, press `Cmd + R` (Mac) or `Ctrl + R` (Windows) in Discord to reload client cache. |
+| **`PrivilegedIntentsRequired` on startup** | Message Content Intent disabled | In the [Discord Developer Portal](https://discord.com/developers/applications), open the **Bot** tab, scroll to *Privileged Gateway Intents*, and enable **Message Content Intent**. |
+| **Model not found / Groq errors** | Deprecated model name or account quota | Check available models at [console.groq.com/docs/models](https://console.groq.com/docs/models) and switch using `/setmodel model:<name>`. |
 
 ## Contributing
 

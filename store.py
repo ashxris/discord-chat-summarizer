@@ -8,7 +8,9 @@ _SCHEMA = """
 CREATE TABLE IF NOT EXISTS guilds (
     guild_id INTEGER PRIMARY KEY,
     groq_key TEXT,
-    model TEXT
+    model TEXT,
+    interval_seconds REAL,
+    message_threshold INTEGER
 );
 CREATE TABLE IF NOT EXISTS channels (
     channel_id INTEGER PRIMARY KEY,
@@ -27,6 +29,11 @@ class Store:
     async def connect(self) -> None:
         self._db = await aiosqlite.connect(self.path)
         await self._db.executescript(_SCHEMA)
+        for col, col_type in [("interval_seconds", "REAL"), ("message_threshold", "INTEGER")]:
+            try:
+                await self._db.execute(f"ALTER TABLE guilds ADD COLUMN {col} {col_type}")
+            except Exception:
+                pass
         await self._db.commit()
 
     async def close(self) -> None:
@@ -39,14 +46,32 @@ class Store:
             raise RuntimeError("Store.connect() must be awaited first")
         return self._db
 
-    async def settings(self, guild_id: int) -> tuple[str | None, str | None]:
-        """Return (groq_key, model) for a guild; either may be None."""
+    async def settings(self, guild_id: int) -> tuple[str | None, str | None, float | None, int | None]:
+        """Return (groq_key, model, interval_seconds, message_threshold) for a guild."""
         db = self._require_db()
         async with db.execute(
-            "SELECT groq_key, model FROM guilds WHERE guild_id = ?", (guild_id,)
+            "SELECT groq_key, model, interval_seconds, message_threshold FROM guilds WHERE guild_id = ?", (guild_id,)
         ) as cursor:
             row = await cursor.fetchone()
-        return (row[0], row[1]) if row else (None, None)
+        return (row[0], row[1], row[2], row[3]) if row else (None, None, None, None)
+
+    async def set_interval(self, guild_id: int, seconds: float) -> None:
+        db = self._require_db()
+        await db.execute(
+            "INSERT INTO guilds (guild_id, interval_seconds) VALUES (?, ?) "
+            "ON CONFLICT(guild_id) DO UPDATE SET interval_seconds = excluded.interval_seconds",
+            (guild_id, seconds),
+        )
+        await db.commit()
+
+    async def set_threshold(self, guild_id: int, count: int) -> None:
+        db = self._require_db()
+        await db.execute(
+            "INSERT INTO guilds (guild_id, message_threshold) VALUES (?, ?) "
+            "ON CONFLICT(guild_id) DO UPDATE SET message_threshold = excluded.message_threshold",
+            (guild_id, count),
+        )
+        await db.commit()
 
     async def set_key(self, guild_id: int, key: str) -> None:
         db = self._require_db()
